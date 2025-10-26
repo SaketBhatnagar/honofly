@@ -1,6 +1,6 @@
 {
-  "name": "create-honofly",
-  "version": "0.1.0",
+  "name": "Honofly",
+  "version": "1.0.0",
   "description": "Scaffold new Honofly projects with a single command.",
   "type": "module",
   "bin": {
