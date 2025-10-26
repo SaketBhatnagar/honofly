@@ -1,6 +1,8 @@
-<p align="center">
-  <img src="https://pub-d2304ab3f09440e884e0b23b0e84a607.r2.dev/honofly-logo.png" alt="Honofly logo" width="160">
-</p>
+<!-- <p align="center"> -->
+
+<!-- </p> -->
+
+<img src="https://pub-d2304ab3f09440e884e0b23b0e84a607.r2.dev/honofly.png" alt="Honofly logo" width="400">
 
 # Honofly
 
