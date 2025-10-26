@@ -1,5 +1,5 @@
 {
-  "name": "Honofly",
+  "name": "honofly",
   "version": "1.0.0",
   "description": "Scaffold new Honofly projects with a single command.",
   "type": "module",
