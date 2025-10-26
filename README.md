@@ -1,39 +1,45 @@
-# honofly
+# create-honofly
 
-HonoFly is the ultimate lightweight, migration-friendly Hono template 🚀. Designed for easy migration between Hono, Express, and NestJS, it includes JWT auth, RBAC, logging, database support, and Docker deployment. Want to switch frameworks? Just update the app/ directory! 🔄🔥
+`create-honofly` lets you scaffold a fully configured Honofly project with one command. It bundles the opinionated template that powers Honofly's JWT auth, RBAC, logging, database support, and Docker-ready deployment so you can start shipping features immediately.
 
-# HonoFly structure
+## Quick start
 
-HonoFly/
-├── src/
-│ ├── app/  
-│ │ ├── HonoApp.ts # Hono-specific app setup
-│ │ ├── Middleware.ts # Register global middlewares
-│ │ ├── Routes.ts # Register API routes
-│ ├── controllers/  
-│ │ ├── UserController.ts # Handles HTTP logic
-│ ├── services/  
-│ │ ├── UserService.ts # Business logic (Framework-independent)
-│ ├── repositories/  
-│ │ ├── UserRepository.ts # Database interactions
-│ ├── middlewares/  
-│ │ ├── authMiddleware.ts # JWT Authentication
-│ │ ├── rbacMiddleware.ts # Role-based Access Control
-│ │ ├── loggerMiddleware.ts # Logging Middleware
-│ │ ├── corsMiddleware.ts # CORS Middleware
-│ │ ├── errorMiddleware.ts # Global Error Handling
-│ ├── config/  
-│ │ ├── Config.ts # Centralized environment configuration
-│ ├── models/  
-│ │ ├── UserModel.ts # Database schema
-│ ├── utils/  
-│ │ ├── ApiResponse.ts # Standardized API responses
-│ ├── scripts/  
-│ │ ├── migrateFramework.ts # Automated script for switching frameworks
-│ ├── docker/  
-│ │ ├── Dockerfile # Docker support
-│ │ ├── docker-compose.yml # Docker Compose for database
-│ ├── index.ts # Entry point
-│ ├── package.json
-│ ├── .env
-│ ├── README.md
+```bash
+npm create honofly@latest my-honofly-app
+```
+
+Then install dependencies and run the development server:
+
+```bash
+cd my-honofly-app
+npm install
+npm run dev
+```
+
+Need to use the current directory instead? Pass `.` as the project name:
+
+```bash
+npm create honofly@latest .
+```
+
+## What gets generated
+
+- Typescript-first Cloudflare Workers setup pre-wired with Hono.
+- Auth-ready stack featuring JWT, RBAC middleware, and request logging.
+- Drizzle ORM + SQLite example database configuration (swapable for other backends).
+- Docker files and scripts under `app/` to pivot between Hono, Express, or Nest in the future.
+
+Explore the template code under `template/` in this repository to understand how everything fits together.
+
+## Developing the scaffolder locally
+
+```bash
+# Link the CLI
+npm install
+npm link
+
+# Test the generator
+create-honofly my-demo
+```
+
+Make your changes inside the `template/` folder. When you're ready to publish a new release, update the version in `package.json` and run `npm publish --access public`.

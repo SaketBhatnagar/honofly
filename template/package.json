@@ -1,0 +1,31 @@
+{
+  "name": "honofly-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "start": "wrangler dev",
+    "test": "vitest",
+    "cf-typegen": "wrangler types"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "^0.6.4",
+    "@cloudflare/workers-types": "^4.20250204.0",
+    "@types/node": "^22.13.1",
+    "typescript": "^5.5.2",
+    "vitest": "2.1.8",
+    "wrangler": "^3.107.3"
+  },
+  "dependencies": {
+    "@hono/swagger-ui": "^0.5.0",
+    "@scalar/hono-api-reference": "^0.5.172",
+    "@types/sqlite3": "^5.1.0",
+    "drizzle-orm": "^0.39.2",
+    "hono": "^4.7.0",
+    "hono-pino": "^0.7.2",
+    "hono-rate-limiter": "^0.4.2",
+    "jose": "^6.0.8",
+    "sqlite3": "^5.1.7"
+  }
+}
