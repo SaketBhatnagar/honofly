@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://pub-d2304ab3f09440e884e0b23b0e84a607.r2.dev/honofly-logo.png" alt="Honofly logo" width="160">
+</p>
+
 # Honofly
 
 Build a real backend fast. Honofly hands you a Cloudflare Workers starter that already has Hono routing, JWT auth, RBAC, logging, Drizzle, and Docker ready to go. Less boilerplate, more shipping.
