@@ -8,7 +8,15 @@
   },
   "files": [
     "bin",
-    "template"
+    "template/README.md",
+    "template/package.json",
+    "template/tsconfig.json",
+    "template/vitest.config.mts",
+    "template/worker-configuration.d.ts",
+    "template/wrangler.json",
+    "template/wrangler.toml",
+    "template/src",
+    "template/test"
   ],
   "engines": {
     "node": ">=18.0.0"
