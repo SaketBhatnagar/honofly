@@ -1,4 +1,3 @@
-import { Context } from 'hono';
 import { HttpContext } from '../types/http.types';
 
 export function getHonoFlyContext(...params:any): HttpContext {
