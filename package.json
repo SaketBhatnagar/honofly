@@ -9,6 +9,7 @@
   "files": [
     "bin",
     "template/README.md",
+    "template/TODO.md",
     "template/package.json",
     "template/tsconfig.json",
     "template/vitest.config.mts",
