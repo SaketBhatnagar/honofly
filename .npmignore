@@ -1,0 +1,9 @@
+# Exclude installed deps and lockfiles from the published template
+template/node_modules/
+template/package-lock.json
+
+# Local logs and caches
+npm-debug.log*
+.npmrc
+.DS_Store
+
