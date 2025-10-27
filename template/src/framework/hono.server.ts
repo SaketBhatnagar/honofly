@@ -1,8 +1,6 @@
 import { Hono } from 'hono';
 import { openAPIConfig } from '../config/openapi';
 import { apiReference } from '@scalar/hono-api-reference';
-import { userRoutes } from '../modules/users/user.routes';
-import { ROUTES_ENDPOINTS } from '../constants/routes-endpoints';
 import { allRoutes } from '../all.routes';
 import { registerRoutes } from '../adapters/registerRouters.adapter';
 import { env } from '../config/env';
@@ -27,8 +25,6 @@ export const createHonoApp = () => {
 };
 
 export function configureOpenapi(app: any, framework: 'express' | 'hono' | 'fastify' | 'nest', ui: 'swagger' | 'scalar') {
-	const { openAPIConfig } = require('../config/openapi');
-
 	// Serve OpenAPI JSON
 	if (framework === 'express') {
 		app.get('/doc', (req: any, res: any) => res.json(openAPIConfig));
