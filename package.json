@@ -1,6 +1,6 @@
 {
   "name": "honofly",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Build framework-agnostic Honofly APIs fast (Hono/Express/Fastify) with typed routes and auto-generated OpenAPI.",
   "type": "module",
   "bin": {
@@ -9,7 +9,6 @@
   "files": [
     "bin",
     "template/README.md",
-    "template/TODO.md",
     "template/package.json",
     "template/tsconfig.json",
     "template/vitest.config.mts",
