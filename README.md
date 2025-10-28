@@ -31,18 +31,24 @@ Build a real backend fast. Honofly hands you a Cloudflare Workers starter that a
 
 ## Quick Start
 
+Recommended (works across npm versions):
+
 ```bash
-npm create honofly@latest my-honofly-app
+npx honofly@latest my-honofly-app
 cd my-honofly-app
 npm install
 npm run dev
 ```
 
-Need to scaffold into the current directory? Pass `.` as the project name:
+Scaffold into the current directory:
 
 ```bash
-npm create honofly@latest .
+npx honofly@latest .
 ```
+
+Notes:
+- If you have a separate package published as `create-honofly`, you can also use `npm create honofly@latest` or `npm init honofly@latest`. Those commands resolve to a package actually named `create-honofly`.
+- This repository publishes the CLI as `honofly` with a `bin` entry, so `npx honofly@latest` is the most reliable invocation.
 
 ## Use the Generated App
 
@@ -78,7 +84,7 @@ npm install
 npm link
 
 # Generate a sample project from source
-create-honofly my-demo
+honofly my-demo
 ```
 
 Iterate inside the `template/` directory. When you are ready to publish, bump the version in `package.json` and run `npm publish --access public`.

@@ -4,7 +4,7 @@
   "description": "Build framework-agnostic Honofly APIs fast (Hono/Express/Fastify) with typed routes and auto-generated OpenAPI.",
   "type": "module",
   "bin": {
-    "create-honofly": "./bin/create-honofly.js"
+    "honofly": "./bin/create-honofly.js"
   },
   "files": [
     "bin",
