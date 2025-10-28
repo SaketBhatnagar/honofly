@@ -4,6 +4,13 @@
 
 <img src="https://pub-d2304ab3f09440e884e0b23b0e84a607.r2.dev/honofly.png" alt="Honofly logo" width="400">
 
+<hr/>
+
+[![npm](https://img.shields.io/npm/v/honofly)](https://www.npmjs.com/package/honofly)
+[![npm](https://img.shields.io/npm/dm/honofly)](https://www.npmjs.com/package/honofly)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+
 # Honofly
 
 Build a real backend fast. Honofly hands you a Cloudflare Workers starter that already has Hono routing, JWT auth, RBAC, logging, Drizzle, and Docker ready to go. Less boilerplate, more shipping.
