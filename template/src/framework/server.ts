@@ -1,7 +1,6 @@
 import { env } from "../config/env";
 import { createHonoApp } from "./hono.server";
-
-type Framework = "hono" | "express" | "fastify";
+import { Framework } from "../types/http.types";
 
 export function createServer(framework?: Framework) {
   const target: Framework = framework ?? env.framework;
@@ -24,4 +23,3 @@ export function createServer(framework?: Framework) {
       );
   }
 }
-

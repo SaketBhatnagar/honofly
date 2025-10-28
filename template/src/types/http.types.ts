@@ -1,27 +1,39 @@
+export type Framework = "hono" | "express" | "fastify";
+
+type RecordOf<T> = Record<string, T>;
+
 export interface HttpRequest {
-    params: Record<string, string>;
-    query: Record<string, string>;
-    body: () => Promise<unknown>;
-    headers: Record<string, string>;
-    method: string;
-    path: string;
+  params: RecordOf<string>;
+  query: RecordOf<string | string[]>;
+  headers: RecordOf<string>;
+  method: string;
+  path: string;
+  body<T = unknown>(): Promise<T>;
 }
 
-export interface HttpResponse {
-    json: (data: unknown, status?: number) => any;
-    status: (code: number) => any;
-    header: (key: string, value: string) => any;
-    redirect: (url: string) => any;
-    text: (data: unknown, status?: number) => any;
-    html: (data: unknown, status?: number) => any;
-    blob: (data: unknown, status?: number) => any;
-    stream: (data: unknown, status?: number) => any;
+export interface ResponseHelpers {
+  json<T = unknown>(data: T, status?: number): Promise<unknown> | unknown;
+  text(data: string, status?: number): Promise<unknown> | unknown;
+  html(data: string, status?: number): Promise<unknown> | unknown;
+  blob(data: unknown, status?: number): Promise<unknown> | unknown;
+  stream(data: unknown, status?: number): Promise<unknown> | unknown;
+  status(code: number): ResponseHelpers;
+  header(name: string, value: string): ResponseHelpers;
+  redirect(url: string, status?: number): Promise<unknown> | unknown;
+  send(body: unknown, status?: number): Promise<unknown> | unknown;
 }
 
 export interface HttpContext {
-    req: HttpRequest;
-    res: HttpResponse;
-    next?: any;
-    get: (key: string) => unknown;
-    set: (key: string, value: unknown) => void;
-} 
+  framework: Framework;
+  req: HttpRequest;
+  res: ResponseHelpers;
+  next: () => Promise<unknown>;
+  get<T = unknown>(key: string): T | undefined;
+  set<T = unknown>(key: string, value: T): void;
+}
+
+export type HandlerResult = unknown;
+
+export type Handler = (context: HttpContext) => Promise<HandlerResult>;
+
+export type Middleware = (context: HttpContext) => Promise<HandlerResult>;
