@@ -44,6 +44,32 @@ Need to scaffold into the current directory? Pass `.` as the project name:
 npm create honofly@latest .
 ```
 
+## Use the Generated App
+
+- Start the API in dev mode: `npm run dev`
+- Build for production: `npm run build`
+- Run tests (if present): `npm test`
+
+Once running, visit:
+- API: `GET /` → returns `{ message: "Hello World" }`
+- OpenAPI JSON: `GET /doc`
+- API Reference UI: `GET /reference`
+
+## Switch Frameworks (Hono/Express/Fastify)
+
+The template is framework-agnostic. Choose your target via env:
+
+- Edit `template/src/config/env.ts` and set `framework: "hono" | "express" | "fastify"`.
+- Or export `FRAMEWORK` in your environment and read it in `env.ts` if you wire a loader.
+
+Today the Hono adapter is implemented; Express/Fastify stubs are included for incremental adoption. Your route/controllers/middlewares are already framework-neutral.
+
+## Typed Routes + Auto Docs
+
+- Define routes in `template/src/modules/**/your.routes.ts` using the `route()` + `defineRoutes()` helpers.
+- Optionally attach `docs` metadata (summary, params, requestBody, responses).
+- The OpenAPI document is derived automatically at runtime from your routes and is served at `/doc` and `/reference`.
+
 ## Local Development of the CLI
 
 ```bash
