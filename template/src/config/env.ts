@@ -1,3 +1,4 @@
+import { Framework } from "../types/http.types";
 
 interface Env {
     PORT: number;
@@ -7,7 +8,7 @@ interface Env {
     JWT_ALGORITHM: string;
     JWT_ISSUER: string;
     JWT_AUDIENCE: string;
-    framework: "hono" | "express" | "fastify";
+    framework: Framework;
 }
 
 const env: Env = {
