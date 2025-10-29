@@ -29,7 +29,9 @@ Build a real backend fast. Honofly hands you a Cloudflare Workers starter that a
 - Docker + scripts under `app/` that make switching runtimes simple.
 - Opinionated logging and error handling so prod is debuggable.
 
-## Quick Start
+## For Users
+
+### Quick Start
 
 Recommended (works across npm versions):
 
@@ -46,11 +48,7 @@ Scaffold into the current directory:
 npx honofly@latest .
 ```
 
-Notes:
-- If you have a separate package published as `create-honofly`, you can also use `npm create honofly@latest` or `npm init honofly@latest`. Those commands resolve to a package actually named `create-honofly`.
-- This repository publishes the CLI as `honofly` with a `bin` entry, so `npx honofly@latest` is the most reliable invocation.
-
-## Use the Generated App
+### Use the Generated App
 
 - Start the API in dev mode: `npm run dev`
 - Build for production: `npm run build`
@@ -61,7 +59,7 @@ Once running, visit:
 - OpenAPI JSON: `GET /doc`
 - API Reference UI: `GET /reference`
 
-## Switch Frameworks (Hono/Express/Fastify)
+### Switch Frameworks (Hono/Express/Fastify) 
 
 The template is framework-agnostic. Choose your target via env:
 
@@ -70,13 +68,15 @@ The template is framework-agnostic. Choose your target via env:
 
 Today the Hono adapter is implemented; Express/Fastify stubs are included for incremental adoption. Your route/controllers/middlewares are already framework-neutral.
 
-## Typed Routes + Auto Docs
+### Typed Routes + Auto Docs
 
 - Define routes in `template/src/modules/**/your.routes.ts` using the `route()` + `defineRoutes()` helpers.
 - Optionally attach `docs` metadata (summary, params, requestBody, responses).
 - The OpenAPI document is derived automatically at runtime from your routes and is served at `/doc` and `/reference`.
 
-## Local Development of the CLI
+## For Contributors
+
+### Local Development of the CLI
 
 ```bash
 # Install dependencies and link the CLI
@@ -89,12 +89,25 @@ honofly my-demo
 
 Iterate inside the `template/` directory. When you are ready to publish, bump the version in `package.json` and run `npm publish --access public`.
 
+### How to Contribute
+
+- Pick an open issue or propose a new enhancement.
+- Discuss significant changes first—use GitHub issues or the Discord server below.
+- Follow the existing TypeScript style; add tests when touching shared contracts.
+
 ## Adoption & Roadmap
 
-`sevydevy.com` already runs on this template in prod, so features are battle-tested. Next up:
+[<img src="https://pub-d2304ab3f09440e884e0b23b0e84a607.r2.dev/sevydevy_logo.png" alt="sevydevy logo" width="100">](https://www.sevydevy.com/)
+`SevyDevy` already runs on this template in prod, so features are battle-tested. Next up:
+
 
 - Shipping deploy presets for AWS and Vercel (Workers today, multi-cloud next).
 - One-click switch between Hono, Express, and Fastify without touching business logic.
 - Cleaner project structure options plus stricter DX tooling.
 
 Because the code stays framework-agnostic, you can drop into Workers now and later slide to Express/Fastify with minimal churn. Want to help? Open an issue or PR.
+
+## Join the Community
+
+We hang out on Discord—come say hi, ask questions, or share what you're building: https://discord.gg/5WdHqmReAx
+- If Honofly helps you ship faster, please star the repo so more folks discover it.
