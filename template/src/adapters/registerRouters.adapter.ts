@@ -1,18 +1,6 @@
-import { getHonoFlyContext } from "./hono.adapter";
+import { getContextBuilder } from "./context";
 import { ROUTE } from "../constants/routes-endpoints";
-import { Framework, Middleware, HttpContext } from "../types/http.types";
-
-type ContextBuilder = (...params: any[]) => HttpContext;
-
-const contextBuilders: Record<Framework, ContextBuilder> = {
-  hono: getHonoFlyContext,
-  express: () => {
-    throw new Error("Express adapter not implemented yet. Add context builder before registering routes.");
-  },
-  fastify: () => {
-    throw new Error("Fastify adapter not implemented yet. Add context builder before registering routes.");
-  },
-};
+import { Framework, Middleware } from "../types/http.types";
 
 // This is a map of the frameworks and the functions to register the routes for each framework
 const frameworkMap: Record<Framework, (app: any, routes: ROUTE[]) => void> = {
@@ -41,7 +29,8 @@ export function registerRoutes(app: any, routes: ROUTE[], framework: Framework) 
 
 // This function is used to build the middleware for the routes and it is used to pass the context specific to the framework to the middleware
 function middlewareBuilder(middlewares: Middleware[], framework: Framework) {
-  const buildContext = contextBuilders[framework];
+  // Defer to the registry at runtime so the same route config works everywhere.
+  const buildContext = getContextBuilder(framework);
   return middlewares.map((middleware) => {
     return async (...params: any[]) => {
       const ctx = buildContext(...params);
@@ -50,9 +39,10 @@ function middlewareBuilder(middlewares: Middleware[], framework: Framework) {
   });
 }
 
-// This function is used to wrap the controller with getHonoFlyContext
+// This function is used to wrap the controller with the framework-specific context builder
 function controllerBuilder(controller: ROUTE["controller"], framework: Framework) {
-  const buildContext = contextBuilders[framework];
+  // Controllers receive the same HttpContext regardless of underlying server.
+  const buildContext = getContextBuilder(framework);
   return async (...params: any[]) => {
     const ctx = buildContext(...params);
     return controller.handler(ctx);
