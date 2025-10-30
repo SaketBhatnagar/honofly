@@ -64,12 +64,22 @@ export function defineRoutes<T extends ROUTE[]>(routes: [...T]): T {
       throw new Error(`Unsupported method "${route.method}". Allowed: ${VALID_METHODS.join(", ")}.`);
     }
 
-    if (!route.path || !route.path.startsWith("/")) {
+    // Enforce presence and format of the path so downstream normalization has a safe value.
+    if (!route.path) {
+      throw new Error(`Route path cannot be empty for method ${route.method}.`);
+    }
+
+    if (!route.path.startsWith("/")) {
       throw new Error(`Route path must start with '/'. Received "${route.path}".`);
     }
 
     if (!route.controller) {
       throw new Error(`Route ${route.method} ${route.path} is missing a controller.`);
+    }
+
+    // Guard against misconfigured controllers before we freeze the definition.
+    if (typeof route.controller.handler !== "function") {
+      throw new Error(`Route ${route.method} ${route.path} handler must be a function.`);
     }
 
     const key = `${route.method}:${route.path}`;
@@ -82,9 +92,23 @@ export function defineRoutes<T extends ROUTE[]>(routes: [...T]): T {
       throw new Error(`Route ${route.method} ${route.path} middlewares must be an array.`);
     }
 
+    // Fail fast if a non-function sneaks into the middleware chain.
+    route.middlewares.forEach((middleware, index) => {
+      if (typeof middleware !== "function") {
+        throw new Error(
+          `Route ${route.method} ${route.path} middleware at index ${index} must be a function.`
+        );
+      }
+    });
+
     if (route.docs) {
       freezeDocs(route.docs);
     }
+
+    // Lock the definition after validation to treat the ROUTE[] list as read-only config.
+    Object.freeze(route.middlewares);
+    Object.freeze(route.controller);
+    Object.freeze(route);
   });
 
   return Object.freeze(routes) as T;

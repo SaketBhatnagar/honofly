@@ -12,7 +12,8 @@ export const createHonoApp = () => {
 	
 	const framework = env.framework;
 
-	registerRoutes(app, allRoutes, framework);
+	// Apply optional route prefixes before handing configuration to Hono.
+	registerRoutes(app, allRoutes, framework, { prefix: env.routePrefix });
 
 	configureOpenapi(app, framework, 'scalar');
 
