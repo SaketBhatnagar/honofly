@@ -9,6 +9,8 @@ interface Env {
     JWT_ISSUER: string;
     JWT_AUDIENCE: string;
     framework: Framework;
+    // Optional per-deployment prefix used by the router registration helper.
+    routePrefix?: string | string[]; // e.g. "/api/v1" or ["/api", "v1"]
 }
 
 const env: Env = {
@@ -19,7 +21,8 @@ const env: Env = {
     JWT_ALGORITHM: 'HS256',
     JWT_ISSUER: 'auth',
     JWT_AUDIENCE: 'api',
-    framework: "hono"
+    framework: "hono",
+    routePrefix: "/api/v1",
 }
 
 export default env;

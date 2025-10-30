@@ -9,11 +9,17 @@
 [![npm](https://img.shields.io/npm/v/honofly)](https://www.npmjs.com/package/honofly)
 [![npm](https://img.shields.io/npm/dm/honofly)](https://www.npmjs.com/package/honofly)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![GitHub](https://img.shields.io/badge/github-repo-black?logo=github)](https://github.com/SaketBhatnagar/honofly)
 
 
 # Honofly
 
 Build a real backend fast. Honofly hands you a Cloudflare Workers starter that already has Hono routing, JWT auth, RBAC, logging, Drizzle, and Docker ready to go. Less boilerplate, more shipping.
+
+## Join the Community
+
+We hang out on Discord - come say hi, ask questions, or share what you're building: https://discord.gg/5WdHqmReAx
+- If Honofly helps you ship faster, please star the repo so more folks discover it.
 
 ## Why devs use it
 
@@ -107,7 +113,3 @@ Iterate inside the `template/` directory. When you are ready to publish, bump th
 
 Because the code stays framework-agnostic, you can drop into Workers now and later slide to Express/Fastify with minimal churn. Want to help? Open an issue or PR.
 
-## Join the Community
-
-We hang out on Discord—come say hi, ask questions, or share what you're building: https://discord.gg/5WdHqmReAx
-- If Honofly helps you ship faster, please star the repo so more folks discover it.
