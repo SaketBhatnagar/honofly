@@ -1,5 +1,6 @@
 import { UserController } from './user.controller';
-import { honoAuthMiddleware } from '../../middlewares/auth.middleware';
+import { authMiddleware } from '../../middlewares/auth.middleware';
+import { loggingMiddleware } from '../../middlewares/logging.middleware';
 import type { ROUTE } from '../../constants/routes-endpoints';
 import { controller, defineRoutes, route } from '../../utils/controller';
 import { UserOpenAPISchema, CreateUserOpenAPISchema, UpdateUserOpenAPISchema } from './user.dto';
@@ -12,7 +13,8 @@ export const userRoutes: ROUTE[] = defineRoutes([
         method: 'GET',
         path: '/users',
         controller: userController.listUsers,
-        middlewares: [honoAuthMiddleware],
+        // Register cross-cutting middlewares in the desired order (logging first, auth second).
+        middlewares: [loggingMiddleware],
         docs: {
 			tags: ['users'],
 			summary: 'Get all users',
