@@ -1,9 +1,10 @@
-import { Hono } from 'hono';
-import { openAPIConfig } from '../config/openapi';
-import { apiReference } from '@scalar/hono-api-reference';
-import { allRoutes } from '../all.routes';
-import { registerRoutes } from '../adapters/registerRouters.adapter';
-import { env } from '../config/env';
+import { Hono } from "hono";
+import { openAPIConfig } from "../config/openapi";
+import { apiReference } from "@scalar/hono-api-reference";
+import { allRoutes } from "../all.routes";
+import { registerRoutes } from "../adapters/registerRouters.adapter";
+import { env } from "../config/env";
+import { translateError } from "../errors/translator";
 export const createHonoApp = () => {
 	const app = new Hono({
 		// Explicitly set the environment type for Cloudflare Workers
@@ -19,7 +20,9 @@ export const createHonoApp = () => {
 
 	app.onError((err, c) => {
 		console.error(err);
-		return c.json({ error: 'Internal Server Error' }, 500);
+		const translated = translateError(err);
+
+		return c.json(translated.body, translated.status);
 	});
 
 	return app;
