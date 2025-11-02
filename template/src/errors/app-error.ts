@@ -1,8 +1,8 @@
-import type { ContentfulStatusCode } from "hono/utils/http-status";
+import type { HttpStatusCode } from "../types/http.types";
 
 export type AppErrorOptions = {
   message: string;
-  status: ContentfulStatusCode;
+  status: HttpStatusCode;
   code: string;
   details?: unknown;
   cause?: unknown;
@@ -10,7 +10,7 @@ export type AppErrorOptions = {
 
 // Base error consistent across frameworks so translators can map to HTTP responses.
 export class AppError extends Error {
-  readonly status: ContentfulStatusCode;
+  readonly status: HttpStatusCode;
   readonly code: string;
   readonly details?: unknown;
 

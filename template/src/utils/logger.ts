@@ -1,7 +1,7 @@
 import type { Framework } from "../types/http.types";
 import type { ExpressLogger } from "./logger.express";
 import type { FastifyLoggerConfiguration } from "./logger.fastify";
-import { createHonoLogger, type HonoLogger } from "./logger.hono";
+import type { HonoLogger } from "./logger.hono";
 import type { LoggerOptions } from "./logger.shared";
 
 export type LoggerForFramework<F extends Framework> = F extends "hono"
@@ -23,7 +23,11 @@ export async function getLogger<F extends Framework>(
   switch (framework) {
     case "hono":
       // Cloudflare path relies on the lightweight Worker-safe middleware.
-      return createHonoLogger(options) as LoggerForFramework<F>;
+      {
+        // Lazy-load so Node bundles avoid shipping Worker-specific code.
+        const module = await import("./logger.hono");
+        return module.createHonoLogger(options) as LoggerForFramework<F>;
+      }
     case "express":
       if (!isNodeRuntime) {
         throw new Error("Express logger is only available in a Node.js runtime.");

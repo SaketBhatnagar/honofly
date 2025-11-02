@@ -1,5 +1,5 @@
-import type { ContentfulStatusCode } from "hono/utils/http-status";
 import { isAppError } from "./app-error";
+import type { HttpStatusCode } from "../types/http.types";
 
 export type ErrorResponseBody = {
   error: {
@@ -10,14 +10,17 @@ export type ErrorResponseBody = {
 };
 
 export type TranslatedError = {
-  status: ContentfulStatusCode;
+  status: HttpStatusCode;
   body: ErrorResponseBody;
 };
 
 const DEFAULT_ERROR_CODE = "internal_error";
-const DEFAULT_STATUS: ContentfulStatusCode = 500;
+const DEFAULT_STATUS: HttpStatusCode = 500;
 
-function toContentfulStatus(status: number): ContentfulStatusCode {
+// Workers can error if we return certain headerless statuses; remap them to a safe default.
+const NO_CONTENT_STATUSES = new Set([101, 204, 205, 304]);
+
+function sanitizeStatus(status: number): HttpStatusCode {
   if (!Number.isInteger(status)) {
     return DEFAULT_STATUS;
   }
@@ -26,15 +29,11 @@ function toContentfulStatus(status: number): ContentfulStatusCode {
     return DEFAULT_STATUS;
   }
 
-  switch (status) {
-    case 101:
-    case 204:
-    case 205:
-    case 304:
-      return DEFAULT_STATUS;
-    default:
-      return status as ContentfulStatusCode;
+  if (NO_CONTENT_STATUSES.has(status)) {
+    return DEFAULT_STATUS;
   }
+
+  return status as HttpStatusCode;
 }
 
 function normalizeMessage(error: unknown): string {
@@ -60,7 +59,7 @@ export function translateError(error: unknown): TranslatedError {
     };
 
     return {
-      status: toContentfulStatus(error.status),
+      status: sanitizeStatus(error.status),
       body: payload,
     };
   }

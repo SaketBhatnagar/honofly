@@ -1,5 +1,8 @@
 export type Framework = "hono" | "express" | "fastify";
 
+// Alias keeps status typing consistent across frameworks without pulling in their enums.
+export type HttpStatusCode = number;
+
 type RecordOf<T> = Record<string, T>;
 
 export interface HttpRequest {
