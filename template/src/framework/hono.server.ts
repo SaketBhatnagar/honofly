@@ -3,9 +3,9 @@ import { allRoutes, createDocsRoutes } from "../all.routes";
 import { registerRoutes } from "../adapters/registerRouters.adapter";
 import { env } from "../config/env";
 import { translateError } from "../errors/translator";
-import { createHonoLogger } from "../utils/logger.hono";
+import { createHonoLogger, type HonoLogger } from "../utils/logger.hono";
 
-export const createHonoApp = () => {
+export const createHonoApp = (logger: HonoLogger = createHonoLogger()) => {
 	const app = new Hono({
 		// Explicitly set the environment type for Cloudflare Workers
 		strict: true,
@@ -13,7 +13,7 @@ export const createHonoApp = () => {
 
 	const framework = env.framework;
 	// Attach request logging before routes so every handler inherits request id + child logger.
-	app.use("*", createHonoLogger());
+	app.use("*", logger);
 
 	// Docs should always be at /doc and /reference; app routes can move under env.routePrefix (e.g. /api/v1/users).
 	const docsRoutes = createDocsRoutes({ basePath: env.routePrefix });

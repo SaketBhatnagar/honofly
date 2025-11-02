@@ -1,2 +1,4 @@
 name = "your-app-name"
-compatibility_date = "2024-01-01" 
+compatibility_date = "2024-10-01"
+nodejs_compat = true
+compatibility_flags = ["nodejs_compat"]

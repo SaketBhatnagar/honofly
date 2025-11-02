@@ -1,13 +1,21 @@
 import { env } from "../config/env";
 import { createHonoApp } from "./hono.server";
 import { Framework } from "../types/http.types";
+import type { LoggerForFramework } from "../utils/logger";
 
-export function createServer(framework?: Framework) {
+interface CreateServerOptions<F extends Framework> {
+  logger?: LoggerForFramework<F>;
+}
+
+export function createServer<F extends Framework>(
+  framework?: F,
+  options: CreateServerOptions<F> = {}
+) {
   const target: Framework = framework ?? env.framework;
 
   switch (target) {
     case "hono":
-      return createHonoApp();
+      return createHonoApp(options.logger as LoggerForFramework<"hono"> | undefined);
     case "express":
       throw new Error(
         "Express bootstrap not implemented yet. Add framework/express.server.ts and wire it here."
