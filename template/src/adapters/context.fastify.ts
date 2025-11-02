@@ -1,3 +1,4 @@
+import { DEFAULT_REQUEST_ID_HEADER } from "../utils/logger.shared";
 import { Framework, HttpContext, ResponseHelpers } from "../types/http.types";
 
 type HeaderRecord = Record<string, string | string[] | undefined>;
@@ -82,6 +83,19 @@ export function buildFastifyContext(...params: any[]): HttpContext {
   // Internal storage mirrors Express locals / Hono c.set so helpers stay consistent.
   const store = new Map<string, unknown>();
 
+  const requestLogger = (request as any).log;
+  const requestId = (request as any).id;
+
+  if (requestLogger) {
+    // Expose the Fastify child logger for framework-neutral middlewares.
+    store.set("logger", requestLogger);
+  }
+
+  if (requestId) {
+    // Make the generated request id available on the normalized context.
+    store.set("requestId", requestId);
+  }
+
   const responseHelpers: ResponseHelpers = {
     json: (data, status) => {
       if (typeof status === "number") {
@@ -156,12 +170,20 @@ export function buildFastifyContext(...params: any[]): HttpContext {
 
   const getBody = createBodyAccessor(async () => request.body);
 
+  const headers = normalizeHeaders(request.headers ?? {});
+  const resolvedRequestId = requestId ?? headers[DEFAULT_REQUEST_ID_HEADER];
+
+  if (resolvedRequestId && !headers[DEFAULT_REQUEST_ID_HEADER]) {
+    // Ensure lookups via DEFAULT_REQUEST_ID_HEADER succeed regardless of inbound casing.
+    headers[DEFAULT_REQUEST_ID_HEADER] = resolvedRequestId;
+  }
+
   return {
     framework,
     req: {
       params: normalizeRecord<string>(request.params ?? {}),
       query: normalizeQuery(request.query),
-      headers: normalizeHeaders(request.headers ?? {}),
+      headers,
       method: request.method,
       // Fastify exposes multiple path shapes; prefer routerPath then fall back to raw URL.
       path: request.routerPath ?? request.url ?? request.raw?.url ?? "",

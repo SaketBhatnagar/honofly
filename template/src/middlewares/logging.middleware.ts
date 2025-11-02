@@ -73,6 +73,8 @@ const DEFAULT_STATUS = 200;
 export const loggingMiddleware: Middleware = async (context: HttpContext) => {
   const { req, res, framework } = context;
   const start = Date.now();
+  const requestLogger = context.get<any>("logger");
+  const requestId = context.get<string>("requestId");
 
   let statusCode: number | undefined;
   let nextInvoked = false;
@@ -93,24 +95,57 @@ export const loggingMiddleware: Middleware = async (context: HttpContext) => {
 
   const logPrefix = `[${framework}] ${req.method.toUpperCase()} ${req.path}`;
 
+  const emitLog = (level: "info" | "warn" | "error", payload: Record<string, unknown>, message: string) => {
+    if (requestLogger && typeof requestLogger[level] === "function") {
+      // Prefer the framework-provided logger when available so logs inherit structured metadata.
+      requestLogger[level](payload, message);
+      return;
+    }
+
+    const base = `${logPrefix} - ${message}`;
+    const suffix = requestId ? ` [requestId=${requestId}]` : "";
+
+    if (level === "error") {
+      console.error(base + suffix, payload.err ?? payload);
+      return;
+    }
+
+    if (level === "warn") {
+      console.warn(base + suffix, payload);
+      return;
+    }
+
+    console.log(base + suffix, payload);
+  };
+
   try {
     const result = await context.next();
 
     if (!nextInvoked) {
-      console.warn(`${logPrefix} -> middleware chain short-circuited before hitting the next handler.`);
+      emitLog(
+        "warn",
+        { reason: "middleware chain short-circuited" },
+        "middleware chain short-circuited before hitting the next handler.",
+      );
     }
 
     const duration = Date.now() - start;
     const status = statusCode ?? DEFAULT_STATUS;
-
-    console.log(`${logPrefix} -> ${status} (${formatDuration(duration)})`);
+    emitLog(
+      status >= 400 ? "warn" : "info",
+      { statusCode: status, responseTimeMs: duration },
+      `completed in ${formatDuration(duration)}`,
+    );
 
     return result;
   } catch (error) {
     const duration = Date.now() - start;
     const status = statusCode ?? 500;
-
-    console.error(`${logPrefix} -> ${status} (failed after ${formatDuration(duration)})`, error);
+    emitLog(
+      "error",
+      { statusCode: status, responseTimeMs: duration, err: error },
+      `failed after ${formatDuration(duration)}`,
+    );
 
     throw error;
   }

@@ -21,7 +21,8 @@
     "@types/sqlite3": "^5.1.0",
     "drizzle-orm": "^0.39.2",
     "hono": "^4.7.0",
-    "hono-pino": "^0.7.2",
+    "pino": "^9.6.0",
+    "pino-http": "^10.3.2",
     "hono-rate-limiter": "^0.4.2",
     "jose": "^6.0.8",
     "sqlite3": "^5.1.7"

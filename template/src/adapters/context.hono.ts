@@ -1,3 +1,4 @@
+import { DEFAULT_REQUEST_ID_HEADER } from "../utils/logger.shared";
 import { Framework, HttpContext, ResponseHelpers } from "../types/http.types";
 
 function normalizeRecord<T>(input: Record<string, T> | undefined | null): Record<string, T> {
@@ -78,13 +79,21 @@ export function buildHonoContext(...params: any[]): HttpContext {
 
   const getBody = createBodyAccessor(async () => c.req.json());
 
+  const headers = normalizeHeaders(c.req.raw.headers);
+  const requestId = c.get("requestId") as string | undefined;
+
+  if (requestId && !headers[DEFAULT_REQUEST_ID_HEADER]) {
+    // Bubble the request id back through the normalized request shape for middlewares/controllers.
+    headers[DEFAULT_REQUEST_ID_HEADER] = requestId;
+  }
+
   return {
     framework,
     req: {
       params: normalizeRecord<string>(c.req.param()),
       query: normalizeRecord<string | string[]>(c.req.query() as Record<string, string | string[]>),
       body: getBody,
-      headers: normalizeHeaders(c.req.raw.headers),
+      headers,
       method: c.req.method,
       path: c.req.path,
     },

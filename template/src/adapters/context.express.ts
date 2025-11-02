@@ -1,3 +1,4 @@
+import { DEFAULT_REQUEST_ID_HEADER } from "../utils/logger.shared";
 import { Framework, HttpContext, ResponseHelpers } from "../types/http.types";
 
 type HeaderRecord = Record<string, string | string[] | undefined>;
@@ -82,6 +83,19 @@ export function buildExpressContext(...params: any[]): HttpContext {
   const framework: Framework = "express";
   const store = new Map<string, unknown>();
 
+  const requestLogger = (req as any).log;
+  const requestId = (req as any).id ?? res?.locals?.requestId;
+
+  if (requestLogger) {
+    // Expose the request-scoped logger via context.get("logger").
+    store.set("logger", requestLogger);
+  }
+
+  if (requestId) {
+    // Mirror the id so downstream handlers can correlate logs outside of pino.
+    store.set("requestId", requestId);
+  }
+
   const responseHelpers: ResponseHelpers = {
     json: (data, status) => {
       if (typeof status === "number") {
@@ -156,12 +170,20 @@ export function buildExpressContext(...params: any[]): HttpContext {
 
   const getBody = createBodyAccessor(async () => req.body);
 
+  const headers = normalizeHeaders(req.headers ?? {});
+  const resolvedRequestId = requestId ?? headers[DEFAULT_REQUEST_ID_HEADER];
+
+  if (resolvedRequestId && !headers[DEFAULT_REQUEST_ID_HEADER]) {
+    // Preserve whichever header casing the user expects while still normalizing lookups.
+    headers[DEFAULT_REQUEST_ID_HEADER] = resolvedRequestId;
+  }
+
   return {
     framework,
     req: {
       params: normalizeRecord<string>(req.params ?? {}),
       query: normalizeQuery(req.query),
-      headers: normalizeHeaders(req.headers ?? {}),
+      headers,
       method: req.method,
       path: req.path ?? req.url,
       body: getBody,
