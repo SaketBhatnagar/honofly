@@ -15,16 +15,13 @@
     "@types/node": "^22.13.1",
     "typescript": "^5.5.2",
     "vitest": "2.1.8",
-    "wrangler": "^3.107.3"
+    "wrangler": "^4.0.0"
   },
   "dependencies": {
-    "@types/sqlite3": "^5.1.0",
-    "drizzle-orm": "^0.39.2",
     "hono": "^4.7.0",
+    "jose": "^6.0.8",
     "pino": "^9.6.0",
     "pino-http": "^10.3.2",
-    "hono-rate-limiter": "^0.4.2",
-    "jose": "^6.0.8",
-    "sqlite3": "^5.1.7"
+    "zod": "^3.23.8"
   }
 }

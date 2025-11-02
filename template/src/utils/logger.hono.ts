@@ -1,4 +1,3 @@
-import type { MiddlewareHandler } from "hono";
 import type { LoggerOptions } from "./logger.shared";
 import {
   DEFAULT_REQUEST_ID_HEADER,
@@ -7,7 +6,23 @@ import {
   statusToLevel,
 } from "./logger.shared";
 
-export type HonoLogger = MiddlewareHandler;
+// Minimal subset of the Hono context we touch so the template stays framework-agnostic.
+type HonoContext = {
+  req: {
+    raw: Request;
+    method: string;
+    path: string;
+  };
+  res: Response | undefined;
+  set: (key: string, value: unknown) => void;
+  get: <T = unknown>(key: string) => T | undefined;
+  header: (name: string, value: string) => void;
+};
+
+type HonoNext = () => Promise<void>;
+
+// Match Hono's middleware contract: next resolves to void and handlers may bubble a Response.
+export type HonoLogger = (context: HonoContext, next: HonoNext) => Promise<Response | void>;
 
 export function createHonoLogger(options?: LoggerOptions): HonoLogger {
   const logger = createPinoInstance("hono", options);
@@ -38,8 +53,8 @@ export function createHonoLogger(options?: LoggerOptions): HonoLogger {
     };
 
     try {
-      const response = (await next()) as Response | undefined;
-      const targetResponse = response ?? context.res;
+      const result = (await next()) as unknown as Response | undefined;
+      const targetResponse = context.res ?? result;
       const statusCode = targetResponse?.status ?? 200;
       const duration = Date.now() - start;
       const level = statusToLevel(statusCode);
@@ -65,7 +80,7 @@ export function createHonoLogger(options?: LoggerOptions): HonoLogger {
 
       logFn(payload, "request completed");
 
-      return response;
+      return result;
     } catch (error) {
       // Errors bubble up, but we still enrich the log record with failure details and timing.
       const duration = Date.now() - start;
