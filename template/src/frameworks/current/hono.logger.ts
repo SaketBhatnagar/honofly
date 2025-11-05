@@ -1,10 +1,10 @@
-import type { LoggerOptions } from "./logger.shared";
+import type { LoggerOptions } from "../../utils/logger.shared.js";
 import {
   DEFAULT_REQUEST_ID_HEADER,
   createPinoInstance,
   ensureRequestId,
   statusToLevel,
-} from "./logger.shared";
+} from "../../utils/logger.shared.js";
 
 // Minimal subset of the Hono context we touch so the template stays framework-agnostic.
 type HonoContext = {
@@ -22,9 +22,9 @@ type HonoContext = {
 type HonoNext = () => Promise<void>;
 
 // Match Hono's middleware contract: next resolves to void and handlers may bubble a Response.
-export type HonoLogger = (context: HonoContext, next: HonoNext) => Promise<Response | void>;
+export type FrameworkLogger = (context: HonoContext, next: HonoNext) => Promise<Response | void>;
 
-export function createHonoLogger(options?: LoggerOptions): HonoLogger {
+export function createLogger(options?: LoggerOptions): FrameworkLogger {
   const logger = createPinoInstance("hono", options);
   const requestIdHeader = options?.requestIdHeader ?? DEFAULT_REQUEST_ID_HEADER;
   const fallbackHeader = requestIdHeader.toLowerCase();
@@ -76,7 +76,12 @@ export function createHonoLogger(options?: LoggerOptions): HonoLogger {
         context.header(requestIdHeader, requestId);
       }
 
-      const logFn = level === "info" ? requestLogger.info.bind(requestLogger) : level === "warn" ? requestLogger.warn.bind(requestLogger) : requestLogger.error.bind(requestLogger);
+      const logFn =
+        level === "info"
+          ? requestLogger.info.bind(requestLogger)
+          : level === "warn"
+            ? requestLogger.warn.bind(requestLogger)
+            : requestLogger.error.bind(requestLogger);
 
       logFn(payload, "request completed");
 

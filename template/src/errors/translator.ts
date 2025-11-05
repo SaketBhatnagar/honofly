@@ -1,5 +1,5 @@
-import { isAppError } from "./app-error";
-import type { HttpStatusCode } from "../types/http.types";
+import { isAppError } from "./app-error.js";
+import type { HttpStatusCode } from "../types/http.types.js";
 
 export type ErrorResponseBody = {
   error: {

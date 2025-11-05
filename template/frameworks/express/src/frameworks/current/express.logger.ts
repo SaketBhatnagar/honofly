@@ -1,13 +1,13 @@
 import type { Request as ExpressRequest, Response as ExpressResponse } from "express";
 import pinoHttp, { type HttpLogger, type Options as PinoHttpOptions } from "pino-http";
-import type { LoggerOptions } from "./logger.shared";
+import type { LoggerOptions } from "../../utils/logger.shared.js";
 import {
   DEFAULT_REQUEST_ID_HEADER,
   createPinoInstance,
   ensureRequestId,
   normalizeHeaderName,
   statusToLevel,
-} from "./logger.shared";
+} from "../../utils/logger.shared.js";
 
 type RequestWithId = ExpressRequest & {
   id?: string;
@@ -17,9 +17,9 @@ type ResponseWithLocals = ExpressResponse & {
   locals: Record<string, unknown>;
 };
 
-export type ExpressLogger = HttpLogger;
+export type FrameworkLogger = HttpLogger;
 
-export function createExpressLogger(options?: LoggerOptions): ExpressLogger {
+export function createLogger(options?: LoggerOptions): FrameworkLogger {
   const requestIdHeader = options?.requestIdHeader ?? DEFAULT_REQUEST_ID_HEADER;
   const normalizedHeader = normalizeHeaderName(requestIdHeader);
   const logger = createPinoInstance("express", options);

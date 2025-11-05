@@ -1,5 +1,6 @@
-import { DEFAULT_REQUEST_ID_HEADER } from "../utils/logger.shared";
-import { Framework, HttpContext, ResponseHelpers } from "../types/http.types";
+import { DEFAULT_REQUEST_ID_HEADER } from "../../utils/logger.shared.js";
+import { HttpContext, ResponseHelpers } from "../../types/http.types.js";
+import { frameworkId } from "./fastify.manifest.js";
 
 type HeaderRecord = Record<string, string | string[] | undefined>;
 
@@ -77,9 +78,8 @@ function createBodyAccessor<T>(loader: () => Promise<T>): () => Promise<T> {
   };
 }
 
-export function buildFastifyContext(...params: any[]): HttpContext {
+export function buildContext(...params: any[]): HttpContext {
   const [request, reply] = params;
-  const framework: Framework = "fastify";
   // Internal storage mirrors Express locals / Hono c.set so helpers stay consistent.
   const store = new Map<string, unknown>();
 
@@ -179,7 +179,7 @@ export function buildFastifyContext(...params: any[]): HttpContext {
   }
 
   return {
-    framework,
+    framework: frameworkId,
     req: {
       params: normalizeRecord<string>(request.params ?? {}),
       query: normalizeQuery(request.query),

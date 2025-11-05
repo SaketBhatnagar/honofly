@@ -1,6 +1,6 @@
-import { ROUTE } from "../constants/routes-endpoints";
-import { Framework } from "../types/http.types";
-import { getRouteRegistrar, RouteBinding } from "./router";
+import { ROUTE } from "../constants/routes-endpoints.js";
+import { Framework } from "../types/http.types.js";
+import { getRouteRegistrar, RouteBinding } from "./router/index.js";
 
 export type RouteGroupInput = string | string[];
 

@@ -1,9 +1,8 @@
-import { UserController } from './user.controller';
-import { authMiddleware } from '../../middlewares/auth.middleware';
-import { loggingMiddleware } from '../../middlewares/logging.middleware';
-import type { ROUTE } from '../../constants/routes-endpoints';
-import { controller, defineRoutes, route } from '../../utils/controller';
-import { UserOpenAPISchema, CreateUserOpenAPISchema, UpdateUserOpenAPISchema } from './user.dto';
+import { UserController } from './user.controller.js';
+import { loggingMiddleware } from '../../middlewares/logging.middleware.js';
+import type { ROUTE } from '../../constants/routes-endpoints.js';
+import { controller, defineRoutes, route } from '../../utils/controller.js';
+import { UserOpenAPISchema, CreateUserOpenAPISchema, UpdateUserOpenAPISchema } from './user.dto.js';
 
 
 const userController = controller(new UserController());

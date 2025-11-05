@@ -1,4 +1,4 @@
-import { HttpContext, Middleware, ResponseHelpers } from "../types/http.types";
+import { HttpContext, Middleware, ResponseHelpers } from "../types/http.types.js";
 
 type MethodKeys = keyof ResponseHelpers;
 

@@ -1,12 +1,11 @@
-import { RouteRegistrar } from "./types";
-import { buildControllerHandler, buildMiddlewareChain } from "./shared";
+import { buildControllerHandler, buildMiddlewareChain } from "../../adapters/router/shared.js";
+import { RouteRegistrar } from "../../adapters/router/types.js";
+import { frameworkId } from "./hono.manifest.js";
 
 // Minimal shape required from a Hono app instance for dynamic method lookups.
 type HonoLikeApp = Record<string, (...args: unknown[]) => unknown>;
 
-const framework = "hono" as const;
-
-export const honoRouteRegistrar: RouteRegistrar = (app, bindings) => {
+export const routeRegistrar: RouteRegistrar = (app, bindings) => {
   const honoApp = app as HonoLikeApp;
 
   bindings.forEach(({ definition, path }) => {
@@ -19,8 +18,8 @@ export const honoRouteRegistrar: RouteRegistrar = (app, bindings) => {
 
     register(
       path,
-      ...buildMiddlewareChain(definition.middlewares, framework),
-      buildControllerHandler(definition.controller, framework)
+      ...buildMiddlewareChain(definition.middlewares, frameworkId),
+      buildControllerHandler(definition.controller, frameworkId),
     );
   });
 };

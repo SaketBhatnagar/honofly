@@ -1,4 +1,4 @@
-import { ROUTE } from "../../constants/routes-endpoints";
+import { ROUTE } from "../../constants/routes-endpoints.js";
 
 // Flattened route definition plus computed path specific to the runtime adapter.
 export type RouteBinding = {

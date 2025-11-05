@@ -1,6 +1,6 @@
 import { jwtVerify } from "jose";
-import { env } from "../config/env";
-import { Middleware } from "../types/http.types";
+import { env } from "../config/env.js";
+import { Middleware } from "../types/http.types.js";
 
 const BEARER_PREFIX = "bearer ";
 

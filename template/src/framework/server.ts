@@ -1,33 +1,39 @@
-import { env } from "../config/env";
-import { createHonoApp } from "./hono.server";
-import { Framework } from "../types/http.types";
-import type { LoggerForFramework } from "../utils/logger";
+import { env } from "../config/env.js";
+import { frameworkId, displayName } from "../frameworks/current/manifest.js";
+import { createApp } from "../frameworks/current/server.js";
+import type { Framework } from "../types/http.types.js";
 
-interface CreateServerOptions<F extends Framework> {
-  logger?: LoggerForFramework<F>;
+interface CreateServerOptions {
+  logger?: Parameters<typeof createApp>[0];
 }
 
-export function createServer<F extends Framework>(
-  framework?: F,
-  options: CreateServerOptions<F> = {}
-) {
-  const target: Framework = framework ?? env.framework;
-
-  switch (target) {
-    case "hono":
-      return createHonoApp(options.logger as LoggerForFramework<"hono"> | undefined);
-    case "express":
-      throw new Error(
-        "Express bootstrap not implemented yet. Add framework/express.server.ts and wire it here."
-      );
-    case "fastify":
-      throw new Error(
-        "Fastify bootstrap not implemented yet. Add framework/fastify.server.ts and wire it here."
-      );
-    default:
-      // Enforce explicit error for unsupported values
-      throw new Error(
-        `Unsupported framework: ${String(target)}. Allowed: 'hono' | 'express' | 'fastify'.`
-      );
+export function createServer(framework?: Framework, options: CreateServerOptions = {}) {
+  const configuredFramework = env.framework;
+  if (configuredFramework !== frameworkId) {
+    throw new Error(
+      [
+        `[honofly] Detected FRAMEWORK="${configuredFramework}" but this scaffold is locked to "${frameworkId}".`,
+        `Update your environment to FRAMEWORK="${frameworkId}" or re-run "npm create honofly@latest -- --framework ${configuredFramework}" to regenerate the ${configuredFramework} variant.`,
+      ].join(" "),
+    );
   }
+
+  const target: Framework = framework ?? configuredFramework;
+
+  if (target !== frameworkId) {
+    throw new Error(
+      [
+        `Framework "${String(target)}" is not available in this scaffold (active: ${displayName}).`,
+        `Re-run "npm create honofly@latest -- --framework ${String(target)}" to scaffold the ${String(target)} runtime.`,
+      ].join(" "),
+    );
+  }
+
+  const { logger } = options as { logger?: Parameters<typeof createApp>[0] };
+
+  if (typeof logger !== "undefined") {
+    return createApp(logger);
+  }
+
+  return createApp();
 }

@@ -1,5 +1,6 @@
-import { DEFAULT_REQUEST_ID_HEADER } from "../utils/logger.shared";
-import { Framework, HttpContext, ResponseHelpers } from "../types/http.types";
+import { DEFAULT_REQUEST_ID_HEADER } from "../../utils/logger.shared.js";
+import { HttpContext, ResponseHelpers } from "../../types/http.types.js";
+import { frameworkId } from "./hono.manifest.js";
 
 function normalizeRecord<T>(input: Record<string, T> | undefined | null): Record<string, T> {
   if (!input) {
@@ -44,9 +45,8 @@ function createBodyAccessor<T>(loader: () => Promise<T>): () => Promise<T> {
 }
 
 // Wrap the Hono context to match the shared HttpContext contract.
-export function buildHonoContext(...params: any[]): HttpContext {
+export function buildContext(...params: any[]): HttpContext {
   const [c, next] = params;
-  const framework: Framework = "hono";
 
   const responseHelpers: ResponseHelpers = {
     json: (data, status) => c.json(data as any, status as any),
@@ -88,7 +88,7 @@ export function buildHonoContext(...params: any[]): HttpContext {
   }
 
   return {
-    framework,
+    framework: frameworkId,
     req: {
       params: normalizeRecord<string>(c.req.param()),
       query: normalizeRecord<string | string[]>(c.req.query() as Record<string, string | string[]>),

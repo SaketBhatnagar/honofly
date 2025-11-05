@@ -1,7 +1,7 @@
-import { getContextBuilder } from "../context";
-import { Framework, Middleware } from "../../types/http.types";
-import { ROUTE } from "../../constants/routes-endpoints";
-import { composeMiddlewares } from "../../middlewares/composer";
+import { getContextBuilder } from "../context.js";
+import { Framework, Middleware } from "../../types/http.types.js";
+import { ROUTE } from "../../constants/routes-endpoints.js";
+import { composeMiddlewares } from "../../middlewares/composer.js";
 
 // Wrap middlewares so each receives a normalized HttpContext for the active framework.
 export function buildMiddlewareChain(middlewares: Middleware[], framework: Framework) {

@@ -1,5 +1,6 @@
-import { DEFAULT_REQUEST_ID_HEADER } from "../utils/logger.shared";
-import { Framework, HttpContext, ResponseHelpers } from "../types/http.types";
+import { DEFAULT_REQUEST_ID_HEADER } from "../../utils/logger.shared.js";
+import { HttpContext, ResponseHelpers } from "../../types/http.types.js";
+import { frameworkId } from "./express.manifest.js";
 
 type HeaderRecord = Record<string, string | string[] | undefined>;
 
@@ -78,9 +79,8 @@ function createBodyAccessor<T>(loader: () => Promise<T>): () => Promise<T> {
 }
 
 // Adapt Express request/response objects to the shared HttpContext surface.
-export function buildExpressContext(...params: any[]): HttpContext {
+export function buildContext(...params: any[]): HttpContext {
   const [req, res, next] = params;
-  const framework: Framework = "express";
   const store = new Map<string, unknown>();
 
   const requestLogger = (req as any).log;
@@ -134,6 +134,9 @@ export function buildExpressContext(...params: any[]): HttpContext {
       return responseHelpers;
     },
     header: (name, value) => {
+      if (res.headersSent) {
+        return responseHelpers;
+      }
       res.setHeader(name, value);
       return responseHelpers;
     },
@@ -179,7 +182,7 @@ export function buildExpressContext(...params: any[]): HttpContext {
   }
 
   return {
-    framework,
+    framework: frameworkId,
     req: {
       params: normalizeRecord<string>(req.params ?? {}),
       query: normalizeQuery(req.query),

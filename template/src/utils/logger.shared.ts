@@ -1,5 +1,5 @@
 import pino, { type Logger as PinoLogger, type LoggerOptions as PinoLoggerOptions } from "pino";
-import type { Framework } from "../types/http.types";
+import type { Framework } from "../types/http.types.js";
 
 export type LoggerOptions = {
   level?: PinoLoggerOptions["level"];

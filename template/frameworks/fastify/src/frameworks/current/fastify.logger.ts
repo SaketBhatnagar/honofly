@@ -1,12 +1,12 @@
 import type { Logger } from "pino";
-import type { LoggerOptions } from "./logger.shared";
+import type { LoggerOptions } from "../../utils/logger.shared.js";
 import {
   DEFAULT_REQUEST_ID_HEADER,
   createPinoInstance,
   ensureRequestId,
   normalizeHeaderName,
   statusToLevel,
-} from "./logger.shared";
+} from "../../utils/logger.shared.js";
 
 type FastifyInstance = {
   addHook: (name: string, handler: (...args: any[]) => unknown) => void;
@@ -30,13 +30,15 @@ type FastifyReply = {
   [key: string]: unknown;
 };
 
-export type FastifyLoggerConfiguration = {
+export type FrameworkLoggerConfiguration = {
   logger: Logger;
   disableRequestLogging: boolean;
   register(instance: FastifyInstance): void;
 };
 
-export function createFastifyLogger(options?: LoggerOptions): FastifyLoggerConfiguration {
+export type FrameworkLogger = FrameworkLoggerConfiguration;
+
+export function createLogger(options?: LoggerOptions): FrameworkLoggerConfiguration {
   const logger = createPinoInstance("fastify", options);
   const requestIdHeader = options?.requestIdHeader ?? DEFAULT_REQUEST_ID_HEADER;
   const normalizedHeader = normalizeHeaderName(requestIdHeader);

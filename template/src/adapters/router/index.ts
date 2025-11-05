@@ -1,28 +1,18 @@
-import { Framework } from "../../types/http.types";
-import { expressRouteRegistrar } from "./express";
-import { fastifyRouteRegistrar } from "./fastify";
-import { honoRouteRegistrar } from "./hono";
-import { RouteRegistrar } from "./types";
-
-// Keep new framework adapters discoverable via a single registry.
-const registry: Partial<Record<Framework, RouteRegistrar>> = {
-  express: expressRouteRegistrar,
-  fastify: fastifyRouteRegistrar,
-  hono: honoRouteRegistrar,
-};
+import { frameworkId, displayName } from "../../frameworks/current/manifest.js";
+import { routeRegistrar } from "../../frameworks/current/router.js";
+import { Framework } from "../../types/http.types.js";
+import { RouteRegistrar } from "./types.js";
 
 export function getRouteRegistrar(framework: Framework): RouteRegistrar {
-  const registrar = registry[framework];
-
-  if (!registrar) {
+  if (framework !== frameworkId) {
     throw new Error(
-      `Route registrar not found for framework: ${String(framework)}. Allowed: ${Object.keys(registry).join(
-        " | "
-      )}.`
+      `Route registrar not available for framework "${String(
+        framework,
+      )}". Re-run the generator with "--framework ${frameworkId}" to scaffold the ${displayName} bindings.`,
     );
   }
 
-  return registrar;
+  return routeRegistrar;
 }
 
-export type { RouteBinding, RouteRegistrar } from "./types";
+export type { RouteBinding, RouteRegistrar } from "./types.js";

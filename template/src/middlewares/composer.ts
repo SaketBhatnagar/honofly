@@ -1,4 +1,4 @@
-import { HttpContext, Middleware, ResponseHelpers } from "../types/http.types";
+import { HttpContext, Middleware, ResponseHelpers } from "../types/http.types.js";
 
 // Utility that turns an array of HttpContext-aware middlewares into a single callable while
 // keeping framework-specific response helpers under observation so we can short-circuit once sent.

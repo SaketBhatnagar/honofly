@@ -1,4 +1,4 @@
-import type { ROUTE, ROUTES_ENDPOINTS, RouteDocs } from "../constants/routes-endpoints";
+import type { ROUTE, ROUTES_ENDPOINTS, RouteDocs } from "../constants/routes-endpoints.js";
 
 type VerbDocsMap = Partial<Record<Lowercase<ROUTES_ENDPOINTS>, RouteDocs>>;
 
