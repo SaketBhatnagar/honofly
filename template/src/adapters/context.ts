@@ -1,27 +1,17 @@
-import { Framework, HttpContext } from "../types/http.types";
-import { buildHonoContext } from "./context.hono";
-import { buildExpressContext } from "./context.express";
-import { buildFastifyContext } from "./context.fastify";
+import { frameworkId, displayName } from "../frameworks/current/manifest.js";
+import { buildContext } from "../frameworks/current/context.js";
+import { Framework, HttpContext } from "../types/http.types.js";
 
 export type ContextBuilder = (...params: any[]) => HttpContext;
 
-// Registry keeps framework bindings in one place so other modules stay agnostic.
-const contextBuilders: Record<Framework, ContextBuilder> = {
-  hono: buildHonoContext,
-  express: buildExpressContext,
-  fastify: buildFastifyContext,
-};
-
 export function getContextBuilder(framework: Framework): ContextBuilder {
-  const builder = contextBuilders[framework];
-
-  if (!builder) {
+  if (framework !== frameworkId) {
     throw new Error(
-      `Context builder not found for framework: ${String(framework)}. Allowed: ${Object.keys(contextBuilders).join(
-        " | "
-      )}.`
+      `Context builder not available for framework "${String(
+        framework,
+      )}". Re-run the generator with "--framework ${frameworkId}" to scaffold the ${displayName} bindings.`,
     );
   }
 
-  return builder;
+  return buildContext;
 }

@@ -1,5 +1,5 @@
-import { UserDb } from '../../config/db';
-import { CreateUserDto, UpdateUserDto, User } from './user.dto';
+import { UserDb } from '../../config/db.js';
+import { CreateUserDto, UpdateUserDto, User } from './user.dto.js';
 
 export class UserService {
     private db: typeof UserDb;

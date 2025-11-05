@@ -1,5 +1,5 @@
-import { Handler } from "../types/http.types";
-import { RouteController, ROUTE, ROUTES_ENDPOINTS, RouteDocs } from "../constants/routes-endpoints";
+import { Handler } from "../types/http.types.js";
+import { RouteController, ROUTE, ROUTES_ENDPOINTS, RouteDocs } from "../constants/routes-endpoints.js";
 
 // Helpers that keep controllers declarative and framework-neutral
 

@@ -54,6 +54,14 @@ Scaffold into the current directory:
 npx honofly@latest .
 ```
 
+Pick a framework while scaffolding (default is `hono`):
+
+```bash
+npx honofly@latest my-honofly-app --framework hono
+npx honofly@latest my-honofly-app --framework express
+npx honofly@latest my-honofly-app --framework fastify
+```
+
 ### Use the Generated App
 
 - Start the API in dev mode: `npm run dev`
@@ -61,7 +69,7 @@ npx honofly@latest .
 - Run tests (if present): `npm test`
 
 Once running, visit:
-- API: `GET /` → returns `{ message: "Hello World" }`
+- API: `GET /` → returns a readiness payload that includes the active framework and request id
 - OpenAPI JSON: `GET /doc`
 - API Reference UI: `GET /reference`
 
@@ -72,7 +80,8 @@ The template is framework-agnostic. Choose your target via env:
 - Edit `template/src/config/env.ts` and set `framework: "hono" | "express" | "fastify"`.
 - Or export `FRAMEWORK` in your environment and read it in `env.ts` if you wire a loader.
 
-Today the Hono adapter is implemented; Express/Fastify stubs are included for incremental adoption. Your route/controllers/middlewares are already framework-neutral.
+All three adapters are wired to the shared HttpContext layer so you can move between Hono (Workers) and Express/Fastify (Node) without touching business logic.
+- Framework-specific bootstraps, loggers, and adapters live under `src/frameworks/current/`. The scaffold swaps this folder based on the `--framework` flag so only the relevant files ship in your app, and thin facade files (for example `src/frameworks/current/server.ts`) simply re-export the clearly named implementations (`express.server.ts`, `fastify.server.ts`, etc.) so the runtime is obvious without breaking shared imports.
 
 ### Typed Routes + Auto Docs
 
@@ -112,4 +121,3 @@ Iterate inside the `template/` directory. When you are ready to publish, bump th
 - Cleaner project structure options plus stricter DX tooling.
 
 Because the code stays framework-agnostic, you can drop into Workers now and later slide to Express/Fastify with minimal churn. Want to help? Open an issue or PR.
-

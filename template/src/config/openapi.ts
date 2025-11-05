@@ -1,4 +1,4 @@
-import { allDocs } from "../all.docs";
+import { allDocs } from "../all.docs.js";
 
 // Keep the base document immutable so downstream code can safely reuse it across requests.
 export const openAPIConfig = Object.freeze({

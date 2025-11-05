@@ -1,4 +1,4 @@
-import { User } from "../modules/users/user.dto";
+import { User } from "../modules/users/user.dto.js";
 
 
 interface UserDb {  

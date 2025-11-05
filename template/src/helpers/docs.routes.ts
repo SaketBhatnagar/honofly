@@ -1,7 +1,7 @@
-import type { ROUTE } from "../constants/routes-endpoints";
-import { docsConfig, type DocsConfig, type ReferenceUiVariant } from "../config/docs";
-import { openAPIConfig } from "../config/openapi";
-import type { HttpRequest } from "../types/http.types";
+import type { ROUTE } from "../constants/routes-endpoints.js";
+import { docsConfig, type DocsConfig, type ReferenceUiVariant } from "../config/docs.js";
+import { openAPIConfig } from "../config/openapi.js";
+import type { HttpRequest } from "../types/http.types.js";
 
 type DocsRouteOptions = Partial<Pick<DocsConfig, "docPath" | "referencePath">> & {
   referenceUi?: ReferenceUiVariant;

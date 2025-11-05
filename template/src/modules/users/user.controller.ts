@@ -1,6 +1,6 @@
-import { HttpContext } from '../../types/http.types';
-import { UserService } from './user.service';
-import { CreateUserDto, UpdateUserDto } from './user.dto';
+import { HttpContext } from '../../types/http.types.js';
+import { UserService } from './user.service.js';
+import { CreateUserDto, UpdateUserDto } from './user.dto.js';
 
 export class UserController {
     private userService: UserService;

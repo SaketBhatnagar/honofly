@@ -1,4 +1,4 @@
-import type { HttpStatusCode } from "../types/http.types";
+import type { HttpStatusCode } from "../types/http.types.js";
 
 export type AppErrorOptions = {
   message: string;

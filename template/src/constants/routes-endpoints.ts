@@ -1,4 +1,4 @@
-import { Handler, Middleware } from '../types/http.types';
+import { Handler, Middleware } from '../types/http.types.js';
 
 export type ROUTES_ENDPOINTS = 'GET' | 'POST' | 'PUT' | 'DELETE';
 

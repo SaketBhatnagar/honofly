@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Framework } from "../types/http.types";
+import { Framework } from "../types/http.types.js";
 
 const isNodeRuntime =
   typeof globalThis.process !== "undefined" && globalThis.process?.release?.name === "node";
