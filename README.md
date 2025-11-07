@@ -221,4 +221,3 @@ See `contribution.md` for setup steps, coding guidelines, and publishing notes.
 - Migration guides for adding new frameworks and moving existing Hono apps to Express/Fastify.
 - Deployment presets beyond Cloudflare Workers (AWS, Vercel) plus opt-in observability hooks (metrics + lifecycle events).
 
-See `TODO.md` for the full checklist and progress tracker.

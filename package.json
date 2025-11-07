@@ -1,6 +1,6 @@
 {
   "name": "honofly",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "description": "Build framework-agnostic Honofly APIs fast (Hono/Express/Fastify) with typed routes and auto-generated OpenAPI.",
   "type": "module",
   "bin": {
