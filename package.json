@@ -26,16 +26,36 @@
     "hono",
     "express",
     "fastify",
+    "cloudflare workers",
+    "node",
     "api",
+    "backend",
+    "rest",
     "framework-agnostic",
+    "isomorphic api",
     "openapi",
     "swagger",
+    "typed routes",
+    "rbac",
+    "jwt",
+    "logging",
+    "drizzle orm",
     "scaffold",
+    "starter",
+    "boilerplate",
     "cli",
     "typescript",
     "routing",
-    "starter",
-    "boilerplate"
+    "template",
+    "generator"
   ],
+  "homepage": "https://github.com/SaketBhatnagar/honofly#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SaketBhatnagar/honofly.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SaketBhatnagar/honofly/issues"
+  },
   "license": "MIT"
 }
